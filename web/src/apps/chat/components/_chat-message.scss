@@ -1,0 +1,14 @@
+
+.chat-app__message {
+    &--remote {
+        color: #00bf00;
+    }
+
+    &--self {
+        color: #40fe55;
+    }
+
+    &--status {
+        color: #ba0f00;
+    }
+}

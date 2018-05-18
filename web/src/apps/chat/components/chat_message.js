@@ -10,9 +10,12 @@ module.exports = function(Component) {
 
       this.state = {}
     }
-    
+
+
 	  render() {
-		  return <div class={this.props.type}>
+      const cssClass = c => this.props.type ? `${c} ${c}--${this.props.type}` : c
+
+      return <div class={cssClass('chat-app__message')}>
         <span>{this.props.txt}</span>
       </div>
 

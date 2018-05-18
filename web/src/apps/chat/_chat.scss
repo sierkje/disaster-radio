@@ -1,0 +1,32 @@
+
+
+.chat-app {
+    &__messages {
+        width: 100%;
+        max-width: 630px;
+        height: 470px;
+        margin: 0 auto;
+        background-color: black;
+        border: 1px solid rgba(80,80,80,1);
+        color: #0fba00;
+        font-family: monospace;
+        font-size: 14px;
+        padding: 5px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    &__input {
+        width: 100%;
+        max-width: 618px;
+        margin: 20px auto;
+        padding: 5px;
+        display: block;
+        color: #0fba00;
+        font-family: monospace;
+        font-size: 14px;
+        background-color: black;
+        border: 0;
+        border-top: 1px solid gray;
+    }
+}

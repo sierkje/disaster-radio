@@ -49,11 +49,11 @@ module.exports = function(Component) {
       }, this)
 
 		  return <div>
-        <form id="chatForm" action="/chat" method="POST" onsubmit={this.send}>
-          <div id="chat">
+        <form id="chatForm" class="chat-app" action="/chat" method="POST" onsubmit={this.send}>
+          <div id="chat" class="chat-app__messages">
             {messages}
           </div>
-          <input id="chatInput" type="text" name="msg" placeholder="Enter you name or alias" autofocus />
+          <input id="chatInput" class="chat-app__input" type="text" name="msg" placeholder="Enter you name or alias" autofocus />
         </form>
       </div>
 	  }
