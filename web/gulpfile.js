@@ -15,7 +15,7 @@ gulp.task('watch:js', js.watch);
 gulp.task('hot:js', js.hot);
 
 gulp.task('build:css', function() {
-  return gulp.src('./src/index.scss')
+  return gulp.src('./src/styles.scss')
     .pipe(sassGlob())
     .pipe(sass().on('error', sass.logError))
     .pipe(cssimport())
