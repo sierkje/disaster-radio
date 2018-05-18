@@ -3,7 +3,7 @@ import {h} from 'preact'
 
 module.exports = function(Component) {
 
-  var ChatMessage = require('./chat_message')(Component)
+  var ChatMessage = require('./components/chat_message')(Component)
 
   return class Chat extends Component {
 
@@ -15,7 +15,7 @@ module.exports = function(Component) {
       });
       app.socket.addListener('c', this.receive)
     }
-    
+
     scrollBottom() {
       var chat = document.getElementById('chat');
       chat.scrollTop = chat.scrollHeight;
