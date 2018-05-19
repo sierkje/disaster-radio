@@ -1,14 +1,64 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Disaster Radio</title>
+    <title>disaster.radio</title>
     <link rel="stylesheet" href="build/styles.css">
   </head>
   <body>
-    <h1>Disaster Radio</h1>
-    <div id="container">
-
-    </div>
+    <header id="_header">
+      <h1 class="_site-name">disaster.radio</h1>
+    </header>
+    <main id="container">
+      <div class="_offline">
+        <style>
+          body {
+            font-size: 1rem;
+            text-align: center;
+            font-family: monospace;
+          }
+          #_site-name {
+            font-size: 1.75rem;
+          }
+          ._offline {
+            width: 20rem;
+            max-width: 100%;
+            margin: 0 auto;
+          }
+          ._offline ._loading {
+            /* content: '*'; */
+            font-size: 7rem;
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            border: 4px dotted darkgray;
+            color: darkgreen;
+            -webkit-animation:spin 4s linear infinite;
+            -moz-animation:spin 4s linear infinite;
+            animation:spin 4s linear infinite;
+            margin: 1rem auto;
+          }
+          ._offline ._no-script {
+            font-weight: strong;
+            color: purple;
+            font-size: 15rem;
+            line-height: .75;
+            margin: 0;
+          }
+          /* &#9889; */
+          @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+          @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+          @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+        </style>
+        <script>
+          document.write("<div class='_loading'>*</div><p>Please hold on, the apps are loading...</p>")
+          </script>
+        <noscript>
+          <p class="_no-script">&#9785;</p>
+          <p>It looks like JavaScript is disabled. Unfortunately this means that
+            loading the <em>disaster.radio</em> apps is impossible.</p>
+        </noscript>
+      </div>
+    </main>
     <script src="build/bundle.js"></script>
   </body>
 </html>
