@@ -1,0 +1,6 @@
+/settings.js
+/static/build/*
+!/static/build/PLACEHOLDER
+/node_modules/
+
+
