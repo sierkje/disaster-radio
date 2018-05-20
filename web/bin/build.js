@@ -19,48 +19,52 @@ function getTime() {
 
 function build(opts) {
   const options = opts || {}
-  const output = path.join(__dirname, '..', 'static', 'build', 'bundle.js')
-  const doBrowserify = browserify({
-    entries: [path.join(__dirname, '..', 'src', 'index.js')],
-    cache: {},
-    packageCache: {},
-  })
+  const buildSrc = [
+    path.join(__dirname, '..', 'src', 'index.js'),
+  ]
+  const buildDest = path.join(__dirname, '..', 'static', 'build', 'bundle.js')
 
-  function onBuildEnd(msg) {
-    console.log(colors.green('Completed') + ((msg) ? (`: ${msg}`) : ''))
+  const doBrowserify = browserify({ entries: buildSrc, cache: {}, packageCache: {} })
+
+  const onBuildEnd = (msg) => {
+    const prefix = colors.green('Completed')
+    const output = msg
+      ? `${prefix}: ${msg}`
+      : prefix
+    console.log(output)
   }
 
-  function onBuildStart() {
-    const outStream = fs.createWriteStream(output)
+  const onBuildStart = () => {
+    const outStream = fs.createWriteStream(buildDest)
 
     process.stdout.write(`Build started at ${getTime()}... `)
 
     if (!options.dev) outStream.on('close', onBuildEnd)
 
-    doBrowserify.bundle().on('error', (error) => {
-      const isSyntaxError = (error instanceof SyntaxError)
-      const errorMatches = (error.message.match(/while parsing file/))
-      if (!isSyntaxError && !errorMatches) {
-        console.error(error)
-        return
-      }
+    doBrowserify.bundle()
+      .on('error', (error) => {
+        const isSyntaxError = (error instanceof SyntaxError)
+        const errorMatches = (error.message.match(/while parsing file/))
+        if (!isSyntaxError && !errorMatches) {
+          console.error(error)
+          return
+        }
 
-      // Format syntax error messages nicely
-      const re = new RegExp(`${error.filename}:? ?`)
-      let msg = error.message.replace(re, '')
-      msg = msg.replace(/ while parsing file:.*/, '')
-      console.error()
-      console.error(`\n${colors.red('Error')}: ${msg.underline}`)
-      console.error()
-      console.error('Filename:', error.filename)
-      console.error()
-      console.error(error.loc)
-      console.error()
-      console.error(error.codeFrame)
-      console.error()
-    })
-
-    doBrowserify.bundle().pipe(outStream)
+        // Format syntax error messages nicely
+        const re = new RegExp(`${error.filename}:? ?`)
+        let msg = error.message.replace(re, '')
+        msg = msg.replace(/ while parsing file:.*/, '')
+        console.error()
+        console.error(`\n${colors.red('Error')}: ${msg.underline}`)
+        console.error()
+        console.error('Filename:', error.filename)
+        console.error()
+        console.error(error.loc)
+        console.error()
+        console.error(error.codeFrame)
+        console.error()
+      })
+      .pipe(outStream)
   }
 
   if (options.dev) {
@@ -98,14 +102,14 @@ function build(opts) {
   }
 
   module.exports = {
-    build,
-    watch: (opts) => {
+    buildJs: build,
+    watchJs: (opts) => {
       const options = opts || {}
       options.dev = true
 
       return build(options)
     },
-    hot: (opts) => {
+    hotModuleReplacement: (opts) => {
       const options = opts || {}
       options.dev = true
       options.hot = true
