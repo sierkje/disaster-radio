@@ -6,60 +6,39 @@
   If either exits then this script exits.
 */
 
-var path = require('path');
-var byline = require('byline');
-var colors = require('colors');
-var minimist = require('minimist');
-var spawn = require('child_process').spawn;
+const path = require('path')
+const byline = require('byline')
+const colors = require('colors')
+const minimist = require('minimist')
+const { spawn } = require('child_process')
 
-var argv = minimist(process.argv.slice(2), {
-  boolean: [
-    'cold'
-  ]
-});
+const argv = minimist(process.argv.slice(2), { boolean: ['cold'] })
+const gulpTask = argv.cold ? 'watch' : 'hot'
+const makeMessage = (color, prefix, data) => `${color(`[${prefix}]`)} ${data}\n`
+// The '--color' argument is intercepted by the the 'colors' node module.
+const builder = spawn(path.join(path.join(path.dirname(require
+  .resolve('gulp')), 'bin', 'gulp.js')), [gulpTask, '--color'])
+const buildMessage = data => makeMessage(colors.gray, 'build', data)
+const server = spawn(path.join(__dirname, 'server.js'), [])
+const serveMessage = data => makeMessage(colors.magenta, 'server', data)
 
-var gulpTask = 'hot';
-if(argv.cold) gulpTask = 'watch';
+builder.stdout.setEncoding('utf8')
+byline(builder.stdout)
+  .on('data', data => process.stdout.write(buildMessage(data)))
+builder.stderr.setEncoding('utf8')
+byline(builder.stderr)
+  .on('data', data => process.stderr.write(buildMessage(data)))
+builder.on('close', (code) => {
+  server.kill()
+  process.exit(code)
+})
 
-// the '--color' argument is intercepted by the the 'colors' node module
-var builder = spawn(path.join(path.join(path.dirname(require.resolve('gulp')), 'bin', 'gulp.js')), [gulpTask, '--color']);
-
-var server = spawn(path.join(__dirname, 'server.js'), [])
-
-function prefix(str, prefix) {
-  var els = str.split(/\r?\n/);
-  return els.join("\n"+prefix);
-}
-
-var buildPrefix = "[build] ".gray;
-builder.stdout.setEncoding('utf8');
-byline(builder.stdout).on('data', function(data) {
-  process.stdout.write(buildPrefix + data + "\n");
-});
-
-builder.stderr.setEncoding('utf8');
-byline(builder.stderr).on('data', function(data) {
-  process.stderr.write(buildPrefix + data + "\n");
-});
-
-builder.on('close', function(code) {
-  server.kill();
-  process.exit(code);
-});
-
-var servePrefix = "[server] ".magenta;
-server.stdout.setEncoding('utf8');
-byline(server.stdout).on('data', function(data) {
-  process.stdout.write(servePrefix + data + "\n");
-});
-
-server.stderr.setEncoding('utf8');
-byline(server.stderr).on('data', function(data) {
-  process.stderr.write(servePrefix + data + "\n");
-});
-
-server.on('close', function(code) {
-  server.kill();
-  process.exit(code);
-});
+server.stdout.setEncoding('utf8')
+byline(server.stdout).on('data', data => process.stdout.write(serveMessage(data)))
+server.stderr.setEncoding('utf8')
+byline(server.stderr).on('data', data => process.stderr.write(serveMessage(data)))
+server.on('close', (code) => {
+  server.kill()
+  process.exit(code)
+})
 
