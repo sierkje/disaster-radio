@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
+const autoprefixer = require('gulp-autoprefixer');
 var cssimport = require('gulp-cssimport');
 var inlineSource = require('gulp-inline-source');
 var eslint = require('gulp-eslint');
@@ -23,6 +24,10 @@ gulp.task('build:css', function() {
   return gulp.src('./src/styles.scss')
     .pipe(sassGlob())
     .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: false
+		}))
     .pipe(cssimport())
     .pipe(gulp.dest('./static/build'));
 });
