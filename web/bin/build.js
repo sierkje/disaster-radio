@@ -58,7 +58,7 @@ function build(opts) {
         }
 
       })
-    
+
       .pipe(outStream);
   }
 
@@ -79,7 +79,7 @@ function build(opts) {
   }
 
   b.on('update', function(time) {
-    onBuildStart();  
+    onBuildStart();
   });
 
   if(opts.dev) {
@@ -110,7 +110,7 @@ if (require.main === module) {
     ],
     default: {}
   });
-  
+
   build(argv);
 
 } else {
