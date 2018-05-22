@@ -1,139 +1,113 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var path = require('path');
-var net = require('net');
-var http = require('http');
-var minimist = require('minimist');
-var ecstatic = require('ecstatic')
-var WebSocket = require('ws');
-var router = require('routes')(); // server side router
+/* eslint-disable no-console */
 
-var argv = minimist(process.argv.slice(2), {
-  alias: {
-    d: 'debug',
-    p: 'port',
-    s: 'settings'
-  },
-  boolean: [
-    'debug'
-  ],
-  default: {
-    settings: '../settings.js',
-    home: path.dirname(__dirname),
-    port: 8000
-  }
-});
+const path = require('path')
+const http = require('http')
+const minimist = require('minimist')
+const ecstatic = require('ecstatic')
+const WebSocket = require('ws')
 
-var settings = require(argv.settings);
-settings.home = argv.home || settings.home;
-settings.port = argv.port || settings.port;
+const settings = (function ensureWebServerSettings() {
+  const argv = minimist(process.argv.slice(2), {
+    alias: {
+      d: 'debug',
+      p: 'port',
+      s: 'settings',
+    },
+    boolean: [
+      'debug',
+    ],
+    default: {
+      settings: '../settings.js',
+      serverRoot: path.dirname(__dirname),
+      port: 8000,
+      isSimulator: true,
+    },
+  })
+  /* eslint-disable-next-line */
+  const settings = require(argv.settings)
+  settings.serverRoot = argv.serverRoot || settings.serverRoot
+  settings.port = argv.port || settings.port
 
-var staticFiles = ecstatic({
-  root: path.join(settings.home, 'static'),
-  baseDir: '',
-  gzip: true,
-  cache: 0
-});
+  return settings
+}())
 
-router.addRoute('/*', function(req, res, match) {
-  return staticFiles(req, res);
-});
-
-
-var server = http.createServer(function (req, res) {
-  var m = router.match(req.url);
-  m.fn(req, res, m);
-});
-
-var wsServer = new WebSocket.Server({
-  server: server,
-  path: '/ws'
-});
-
-function genID(curID) {
-  var b = Buffer.alloc(2);
-  b.writeUInt16LE(curID);
-
-  if(curID >= (Math.pow(2, 16) - 1)) {
-    curID = 0;
-  } else {
-    curID++;
-  }
+const server = http.createServer()
+const wsServer = new WebSocket.Server({ server, path: '/ws' })
+const generateId = (currentId) => {
+  const buffer = Buffer.alloc(2)
+  buffer.writeUInt16LE(currentId)
 
   return {
-    id: b,
-    nextID: curID
+    // id: buffer,
+    id: buffer,
+    nextId: (currentId >= ((2 ** 16) - 1)) ? 0 : currentId + 1,
   }
 }
-
-
-function send(ws, msg, curID) {
-  var o;
-  if(!Buffer.isBuffer(curID)) {
-    o = genID(curID);
-  }
-
-  var msg = Buffer.concat([((o) ? o.id : curID), msg]);
-  
-  ws.send(msg, {
+const send = (ws, message, currentId) => {
+  const { id, nextId } = (!Buffer.isBuffer(currentId))
+    ? generateId(currentId)
+    : { id: undefined, nextId: undefined }
+  ws.send(Buffer.concat([(id || currentId), message]), {
     compress: false,
-    binary: true
-  });
+    binary: true,
+  })
 
-  if(o) {
-    return o.nextID;
+  return nextId
+}
+const sendMessage = (ws, message, currentId) => send(ws, Buffer.concat([
+  Buffer.from('c|', 'utf8'),
+  (!Buffer.isBuffer(message)) ? Buffer.from(message, 'utf8') : message,
+]), currentId)
+const sendACK = (ws, msg) => send(ws, Buffer.from('!', 'utf8'), msg.slice(0, 2))
+const startWebServer = (hostname, port) => {
+  console.log(`Starting disaster.radio simulator on ${(hostname || '*')} port ${port}`)
+  server.listen(port, hostname)
+}
+
+server.on('request', (req, res) => {
+  const reqUrl = String(req.url)
+  const reqDir = reqUrl.replace(/^\/+/, '').split(/\/+/, 1)[0]
+  switch (reqDir) {
+    case 'build':
+    case 'index.html':
+      break
+    default:
+      req.url = '/'
   }
-}
+  ecstatic({
+    root: path.join(settings.serverRoot, 'static'),
+    baseDir: '',
+    gzip: true,
+    cache: 0,
+    autoIndex: true,
+    handleError: true,
+  })(req, res)
+})
 
-function sendMsg(ws, msg, curID) {
+wsServer.on('connection', (ws) => {
+  let currentId = 0
+  const sendFakeMessages = (settings.isSimulator)
+    ? setInterval(() => {
+      // send fake chat messages every so often
+      console.log('sending message with ID:', currentId)
+      currentId = sendMessage(ws, '<cookie_cat> hello apocalypse!', currentId)
+    }, 5000)
+    : undefined
 
-  if(!Buffer.isBuffer(msg)) {
-    msg = Buffer.from(msg, 'utf8');
-  }
+  ws.on('close', () => {
+    console.log('client disconnected')
+    if (sendFakeMessages) clearInterval(sendFakeMessages)
+  })
 
-  msg = Buffer.concat([Buffer.from('c|', 'utf8'), msg]);
-
-  return send(ws, msg, curID);
-}
-
-function sendACK(ws, msg) {
-  var msgID = msg.slice(0, 2);
-
-  return send(ws, Buffer.from('!', 'utf8'), msgID);
-}
-
-
-wsServer.on('connection', function(ws, req) {
-
-  var curID = 0;
-
-  // send fake chat messages every so often
-  var sendTimer = setInterval(function() {
-    console.log("sending message with ID:", curID);
-    curID = sendMsg(ws, "<cookie_cat> hello apocalypse!", curID);
-
-  }, 5000);
-
-  ws.on('close', function(code, reason) {
-    console.log("client disconnected");
-    clearInterval(sendTimer);
-  });
- 
-  ws.on('message', function(message) {
-
-    console.log('received: %s', message.toString('utf8'));
+  ws.on('message', (message) => {
+    console.log('received: %s', message.toString('utf8'))
 
     // send ACK
-    setTimeout(function() {
+    setTimeout(() => sendACK(ws, message), 500)
+  })
+})
 
-      sendACK(ws, message);
-
-    }, 500)
-  });
- 
-});
-
-// start the webserver
-console.log("Starting disaster radio simulator on " + (settings.hostname || '*') + " port " + settings.port);
-server.listen(settings.port, settings.hostname);
+// Start the webserver.
+startWebServer(settings.hostname, settings.port)
