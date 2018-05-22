@@ -1,7 +1,21 @@
 
 module.exports = {
 
-  port: 8000, // simulator webserver port
-  hostname: 'localhost' // simulator webserver hostname  
+  /**
+   * Node.js webserver port.
+   */
+  port: 8000,
 
-};
+  /**
+   * Node.js webserver hostname.
+   */
+  hostname: 'localhost',
+
+  /**
+   * Flag that determines whether fake messages should be generated.
+   *
+   * Set this to false if fake message should not be generated.
+   */
+  isSimulator: true,
+
+}
