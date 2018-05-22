@@ -6,7 +6,7 @@
     "build-css": "gulp build:css",
     "build-js": "bin/build.js",
     "build": "gulp build",
-    "clean": "rm static/build/*",
+    "clean": "rm static/build/* && echo 'praise bob' > static/build/PLACEHOLDER",
     "dev": "bin/dev.js",
     "hot-js": "bin/build.js -d --hot",
     "hot": "gulp hot",
