@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-/*
-  This script launches both the builder (in watchify mode) and the server.
-  Console output from builder and server are prefixed to differentiate them.
-  If either exits then this script exits.
-*/
+/**
+ * This launches both the builder (in watchify mode) and the server. Console
+ * output from builder and server are prefixed to differentiate them. If either
+ * exits then this script exits.
+ */
 
 const path = require('path')
 const byline = require('byline')
