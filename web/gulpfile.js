@@ -8,7 +8,7 @@ const cssimport = require('gulp-cssimport')
 // const inlineSource = require('gulp-inline-source');
 const eslint = require('gulp-eslint')
 const stylelint = require('gulp-stylelint')
-const { jsBuild, jsWatch, hotModuleReplacement } = require('./bin/build.js')
+const { buildJs, watchJs, hotModuleReplacement } = require('./bin/build.js')
 
 /**
  * CSS (scss) tasks.
@@ -33,8 +33,8 @@ gulp.task('lint:css', () => gulp
 /**
  * JavaScript (js) tasks.
  */
-gulp.task('build:js', jsBuild)
-gulp.task('watch:js', jsWatch)
+gulp.task('build:js', buildJs)
+gulp.task('watch:js', watchJs)
 gulp.task('hot:js', hotModuleReplacement)
 gulp.task('lint:js', () => gulp
   .src(['./src/**/*.js', './bin/**/*.js'])

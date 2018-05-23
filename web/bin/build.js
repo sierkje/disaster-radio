@@ -43,8 +43,7 @@ function build(opts) {
 
     if (!options.dev) outStream.on('close', onBuildEnd)
 
-    doBrowserify.bundle()
-      .on('error', (error) => {
+    doBrowserify.bundle().on('error', (error) => {
         const isSyntaxError = (error instanceof SyntaxError)
         const errorMatches = (error.message.match(/while parsing file/))
         if (!isSyntaxError && !errorMatches) {
@@ -66,7 +65,7 @@ function build(opts) {
         console.error(error.codeFrame)
         console.error()
       })
-      .pipe(outStream)
+    doBrowserify.bundle().pipe(outStream)
   }
 
   if (options.dev) {
