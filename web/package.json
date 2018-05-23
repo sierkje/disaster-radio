@@ -45,7 +45,6 @@
     "gulp-stylelint": "^7.0.0",
     "minimist": "^1.2.0",
     "preact": "^8.2.1",
-    "routes": "^2.1.0",
     "stylelint": "^9.2.1",
     "stylelint-config-recommended": "^2.1.0",
     "tweetnacl": "^1.0.0",
