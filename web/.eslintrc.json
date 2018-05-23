@@ -7,16 +7,19 @@
     "browser": true
   },
   "plugins": [
-    "react",
+    "import",
     "jsx-a11y",
-    "import"
+    "react"
   ],
+  "globals": {
+    "app": true
+  },
   "rules": {
-    "semi": ["warn", "never"],
-    "semi-style": ["warn", "first"],
-     "no-unused-vars": ["error", { "varsIgnorePattern": "^h$" }],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "^h$" }],
+    "react/jsx-filename-extension": "off",
     "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": "off"
+    "semi": ["warn", "never"],
+    "semi-style": ["warn", "first"]
   },
   "settings": {
     "react": { "createClass": "h", "pragma": "Preact" }
