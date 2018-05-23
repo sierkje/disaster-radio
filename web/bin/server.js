@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/* eslint-env node */
 /* eslint-disable no-console */
 
 const path = require('path')

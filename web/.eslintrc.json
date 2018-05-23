@@ -1,5 +1,11 @@
 {
-  "extends": "airbnb",
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true
+  },
   "plugins": [
     "react",
     "jsx-a11y",
@@ -7,6 +13,12 @@
   ],
   "rules": {
     "semi": ["warn", "never"],
-    "semi-style": ["warn", "first"]
+    "semi-style": ["warn", "first"],
+     "no-unused-vars": ["error", { "varsIgnorePattern": "^h$" }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off"
+  },
+  "settings": {
+    "react": { "createClass": "h", "pragma": "Preact" }
   }
 }

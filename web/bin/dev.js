@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-env node */
+
 /**
  * This launches both the builder (in watchify mode) and the server. Console
  * output from builder and server are prefixed to differentiate them. If either
