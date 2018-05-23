@@ -44,27 +44,27 @@ function build(opts) {
     if (!options.dev) outStream.on('close', onBuildEnd)
 
     doBrowserify.bundle().on('error', (error) => {
-        const isSyntaxError = (error instanceof SyntaxError)
-        const errorMatches = (error.message.match(/while parsing file/))
-        if (!isSyntaxError && !errorMatches) {
-          console.error(error)
-          return
-        }
+      const isSyntaxError = (error instanceof SyntaxError)
+      const errorMatches = (error.message.match(/while parsing file/))
+      if (!isSyntaxError && !errorMatches) {
+        console.error(error)
+        return
+      }
 
-        // Format syntax error messages nicely
-        const re = new RegExp(`${error.filename}:? ?`)
-        let msg = error.message.replace(re, '')
-        msg = msg.replace(/ while parsing file:.*/, '')
-        console.error()
-        console.error(`\n${colors.red('Error')}: ${msg.underline}`)
-        console.error()
-        console.error('Filename:', error.filename)
-        console.error()
-        console.error(error.loc)
-        console.error()
-        console.error(error.codeFrame)
-        console.error()
-      })
+      // Format syntax error messages nicely
+      const re = new RegExp(`${error.filename}:? ?`)
+      let msg = error.message.replace(re, '')
+      msg = msg.replace(/ while parsing file:.*/, '')
+      console.error()
+      console.error(`\n${colors.red('Error')}: ${msg.underline}`)
+      console.error()
+      console.error('Filename:', error.filename)
+      console.error()
+      console.error(error.loc)
+      console.error()
+      console.error(error.codeFrame)
+      console.error()
+    })
     doBrowserify.bundle().pipe(outStream)
   }
 
