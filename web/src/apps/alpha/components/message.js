@@ -3,7 +3,7 @@ import {h} from 'preact'
 
 module.exports = function(Component) {
 
-  return class ChatMessage extends Component {
+  return class Message extends Component {
 
     constructor(props) {
       super(props)
@@ -15,7 +15,7 @@ module.exports = function(Component) {
 	  render() {
       const cssClass = c => this.props.type ? `${c} ${c}--${this.props.type}` : c
 
-      return <div class={cssClass('chat-app__message')}>
+      return <div class={cssClass('alpha-app__message')}>
         <span>{this.props.txt}</span>
       </div>
 

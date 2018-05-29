@@ -3,16 +3,16 @@ import { h, render, Component as PreactComponent } from 'preact'
 import ashnazg from 'ashnazg'
 import Socket from './core/lib/js/socket'
 import cipher from './core/lib/js/cipher'
-import makeChat from './apps/chat'
-import chatActions from './apps/chat/actions'
+import makeAlphaApp from './apps/alpha'
+import alphaAppActions from './apps/alpha/actions'
 
 const Component = ashnazg(PreactComponent)
-const Chat = makeChat(Component)
+const AlphaApp = makeAlphaApp(Component)
 const container = document.getElementById('container')
 
 function init() {
   /* eslint-disable-next-line global-require */
-  app.actions = chatActions
+  app.actions = alphaAppActions
   app.socket = new Socket('/ws', { debug: true })
   app.socket.connect((err, isConnected) => {
     /* eslint-disable-next-line no-console */
@@ -21,7 +21,7 @@ function init() {
     if (err) console.error(err)
   })
 
-  render(<Chat state />, container, (container.children.length)
+  render(<AlphaApp state />, container, (container.children.length)
     ? container.children[0]
     : undefined)
 

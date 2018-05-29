@@ -58,7 +58,7 @@ const send = (ws, message, currentId) => {
   return nextId
 }
 const sendMessage = (ws, message, currentId) => send(ws, Buffer.concat([
-  Buffer.from('c|', 'utf8'),
+  Buffer.from('@|', 'utf8'),
   (!Buffer.isBuffer(message)) ? Buffer.from(message, 'utf8') : message,
 ]), currentId)
 const sendACK = (ws, msg) => send(ws, Buffer.from('!', 'utf8'), msg.slice(0, 2))
@@ -91,7 +91,7 @@ wsServer.on('connection', (ws) => {
   let currentId = 0
   const sendFakeMessages = (settings.isSimulator)
     ? setInterval(() => {
-      // send fake chat messages every so often
+      // send fake messages every so often
       console.log('sending message with ID:', currentId)
       currentId = sendMessage(ws, '<cookie_cat> hello apocalypse!', currentId)
     }, 5000)

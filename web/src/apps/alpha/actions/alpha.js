@@ -5,9 +5,9 @@ var self = module.exports = {
 
   showMessage: function(txt, type) {
     if(!type) type = 'remote';
-    var msgs = app.state.chat.messages.slice(0);
+    var msgs = app.state.alpha.messages.slice(0);
     msgs.push({txt: txt, type: type});
-    app.changeState({chat: {messages: msgs}});
+    app.changeState({alpha: {messages: msgs}});
   },
 
   join: function(nick) {
