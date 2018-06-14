@@ -2,5 +2,7 @@
 /static/build/*
 !/static/build/PLACEHOLDER
 /node_modules/
+/.tmp/*
+!/.tmp/README.md
 
 
