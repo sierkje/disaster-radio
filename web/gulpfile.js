@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+const rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var cssimport = require('gulp-cssimport');
 var inlineSource = require('gulp-inline-source');
@@ -17,22 +18,22 @@ gulp.task('build:css', function() {
   return gulp.src('./src/core/index.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(cssimport())
-    .pipe(gulp.dest('./static/build'));
+    .pipe(rename('disaster.radio.css'))
+    .pipe(gulp.dest('./static/assets/'));
 });
  
 gulp.task('watch:css', function() {
   gulp.watch('./src/css/**/*.scss', ['build:css']);
 });
 
-// not currently used
 gulp.task('build:html', function() {
-  return gulp.src('./static/index.html')
+  return gulp.src('./src/core/index.html')
     .pipe(inlineSource())
-    .pipe(gulp.dest('./static/build'))
+    .pipe(gulp.dest('./static/'))
 });
 
 
-gulp.task('build', ['build:js', 'build:css']);
+gulp.task('build', ['build:html', 'build:js', 'build:css']);
 
 gulp.task('watch', ['watch:js', 'watch:css']);
 

@@ -20,7 +20,7 @@ function getTime() {
 function build(opts) {
   opts = opts || {};
 
-  var output = path.join(__dirname, '..', 'static', 'build', 'bundle.js');
+  var output = path.join(__dirname, '..', 'static', 'assets', 'disaster.radio.js');
 
   function onBuildEnd(msg) {
     console.log("Completed".green + ((msg) ? (': ' + msg) : ''));

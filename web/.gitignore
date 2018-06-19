@@ -1,6 +1,8 @@
 /settings.js
-/static/build/*
-!/static/build/PLACEHOLDER
+/static/*
+!/static/assets/
+/static/assets/*
+!/static/assets/.gitkeep
 /node_modules/
 /.tmp/*
 !/.tmp/README.md
