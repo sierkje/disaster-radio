@@ -1,5 +1,5 @@
 
-import cipher from '../cipher.js';
+import cipher from '../../../core/lib/js/cipher';
 
 var self = module.exports = {
 
@@ -12,7 +12,7 @@ var self = module.exports = {
 
   join: function(nick) {
     app.changeState({
-      user: { 
+      user: {
         name: nick
       }
     })

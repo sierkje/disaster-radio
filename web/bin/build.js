@@ -63,7 +63,7 @@ function build(opts) {
   }
 
   var b = browserify({
-    entries: [path.join(__dirname, '..', 'src', 'js', 'index.js')],
+    entries: [path.join(__dirname, '..', 'src', 'core', 'index.js')],
     cache: {},
     packageCache: {}
   })
