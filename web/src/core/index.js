@@ -3,9 +3,9 @@ import {h, render, Component as PreactComponent} from 'preact'
 import Socket from './lib/js/socket'
 import ashnazg from 'ashnazg'
 import cipher from './lib/js/cipher'
+import appInfo from '../../.tmp/disaster.app_info'
 
 const Component = ashnazg(PreactComponent)
-var Chat = require('../apps/chat')(Component)
 
 function renderAll() {
   var container = document.getElementById('container');
@@ -15,7 +15,9 @@ function renderAll() {
     replace = container.children[0];
   }
 
-  render(<Chat state />, container, replace);
+  // @todo Replace this with router.
+  const App = appInfo.map(app => app(Component)).pop();
+  render(<App state />, container, replace);
 }
 
 

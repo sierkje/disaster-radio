@@ -58,7 +58,7 @@ function build(opts) {
         }
 
       })
-    
+
       .pipe(outStream);
   }
 
@@ -79,7 +79,7 @@ function build(opts) {
   }
 
   b.on('update', function(time) {
-    onBuildStart();  
+    onBuildStart();
   });
 
   if(opts.dev) {
@@ -98,6 +98,41 @@ function build(opts) {
   onBuildStart();
 }
 
+const findApps = () => {
+  const tmpFolderPath = path.join(__dirname, '..', '.tmp');
+  const tmpFilePath = path.join(tmpFolderPath, 'disaster.app_info.js');
+  const appsFolderPath = path.join(__dirname, '..', 'src', 'apps');
+  const appInfoFileName = 'disaster.app.js';
+  if (!fs.existsSync(tmpFolderPath)) {
+    fs.mkdir(tmpFolderPath);
+    console.log('The .tmp folder was deleted, so it was created.');
+  }
+  const toCamelCase = str => str.replace(/-_\w/g, x => x[1].toUpperCase)
+  fs.writeFileSync(tmpFilePath, (() => {
+    let content = [];
+    const apps = fs.readdirSync(appsFolderPath)
+      .map(x => ({
+        name: x.replace(/-_\w/g, str => str[1].toUpperCase),
+        folder: path.join(appsFolderPath, x),
+        file: path.join(appsFolderPath, x, appInfoFileName),
+      }))
+      // Only folders can contain apps:
+      .filter(x => fs.lstatSync(x.folder).isDirectory())
+      // Apps must provide a disaster.radio.js file:
+      .filter(x => fs.existsSync(x.file));
+    for (app of apps) {
+      content.push('import { default as ' + app.name + ' } from "' + app.file + '";\n\n');
+    }
+    content.push('const appInfo = [\n');
+    for (app of apps) {
+      content.push('  (deps) => ' + app.name + '(deps),\n');
+    }
+    content.push('];\n\n');
+    content.push('export default appInfo;\n');
+    return content.join('');
+  })(), 'utf8');
+};
+
 if (require.main === module) {
 
   var argv = minimist(process.argv.slice(2), {
@@ -110,7 +145,8 @@ if (require.main === module) {
     ],
     default: {}
   });
-  
+
+  findApps();
   build(argv);
 
 } else {
@@ -129,7 +165,9 @@ if (require.main === module) {
       opts.dev = true;
       opts.hot = true;
       return build(opts);
-    }
+    },
+
+    findApps,
   }
 
 }

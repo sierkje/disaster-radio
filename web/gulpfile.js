@@ -9,7 +9,9 @@ var cssimport = require('gulp-cssimport');
 var inlineSource = require('gulp-inline-source');
 var js = require('./bin/build.js');
 
-gulp.task('build:js', js.build);
+gulp.task('js:findApps', js.findApps);
+
+gulp.task('build:js', ['js:findApps'], js.build);
 
 gulp.task('watch:js', js.watch);
 
