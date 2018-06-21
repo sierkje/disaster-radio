@@ -1,0 +1,41 @@
+
+#chat {
+  background-color: black;
+  border: 1px solid rgba(80, 80, 80, 1);
+  color: #0fba00;
+  font-family: monospace;
+  font-size: 14px;
+  height: 470px;
+  margin: 0 auto;
+  max-width: 630px;
+  padding: 5px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+
+  .remote {
+    color: #00bf00;
+  }
+
+  .self {
+    color: #40fe55;
+  }
+
+  .status {
+    color: #ba0f00;
+  }
+
+  &Input {
+    background-color: black;
+    border: 0;
+    border-top: 1px solid gray;
+    color: #0fba00;
+    display: block;
+    font-family: monospace;
+    font-size: 14px;
+    margin: 20px auto;
+    max-width: 618px;
+    padding: 5px;
+    width: 100%;
+  }
+}

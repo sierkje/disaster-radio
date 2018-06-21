@@ -3,11 +3,12 @@
 var gulp = require('gulp');
 const rename = require('gulp-rename');
 var sass = require('gulp-sass');
+const sassGlob = require('gulp-sass-glob')
 var cssimport = require('gulp-cssimport');
 var inlineSource = require('gulp-inline-source');
 var js = require('./bin/build.js');
 
-gulp.task('build:js', js.build); 
+gulp.task('build:js', js.build);
 
 gulp.task('watch:js', js.watch);
 
@@ -16,12 +17,13 @@ gulp.task('hot:js', js.hot);
 
 gulp.task('build:css', function() {
   return gulp.src('./src/core/index.scss')
+    .pipe(sassGlob())
     .pipe(sass().on('error', sass.logError))
     .pipe(cssimport())
     .pipe(rename('disaster.radio.css'))
     .pipe(gulp.dest('./static/assets/'));
 });
- 
+
 gulp.task('watch:css', function() {
   gulp.watch('./src/css/**/*.scss', ['build:css']);
 });

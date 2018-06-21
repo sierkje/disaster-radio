@@ -1,65 +1,10 @@
+// Global variables.
+@import 'lib/scss/variables';
+// Global HTML element styles.
+@import 'lib/scss/elements';
+// Global component styles.
+@import 'lib/scss/components/**/*';
+// Default and custom app styles.
+@import '../apps/**/*';
 
-$white: rgba(220,220,220,1);
 
-body {
-    font-family: sans-serif;
-    margin: 20px;
-    background: rgba(0,0,0,1);
-    color: $white;
-}
-
-.noselect {
-  -webkit-touch-callout: none;
-    -webkit-user-select: none;
-     -khtml-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
-}
-
-h1 {
-    text-align: center;
-    margin: 5px 0 10px 0;
-    font-size: 1.2em;
-}
-
-#chat {
-    width: 100%;
-    max-width: 630px;
-    height: 470px;
-    margin: 0 auto;
-    background-color: black;
-    border: 1px solid rgba(80,80,80,1);
-    color: #0fba00;
-    font-family: monospace;
-    font-size: 14px;
-    padding: 5px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-#chat .remote {
-    color: #00bf00;
-}
-
-#chat .self {
-    color: #40fe55;
-}
-
-#chat .status {
-    color: #ba0f00;
-}
-
-#chatInput {
-    width: 100%;
-    max-width: 618px;
-    margin: 20px auto;
-    padding: 5px;
-    display: block;
-    color: #0fba00;
-    font-family: monospace;
-    font-size: 14px;
-    background-color: black;
-    border: 0;
-    border-top: 1px solid gray;
-}
