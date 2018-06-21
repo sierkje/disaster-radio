@@ -4,6 +4,7 @@ var gulp = require('gulp');
 const rename = require('gulp-rename');
 var sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob')
+const autoprefixer = require('gulp-autoprefixer')
 var cssimport = require('gulp-cssimport');
 var inlineSource = require('gulp-inline-source');
 var js = require('./bin/build.js');
@@ -20,6 +21,7 @@ gulp.task('build:css', function() {
     .pipe(sassGlob())
     .pipe(sass().on('error', sass.logError))
     .pipe(cssimport())
+    .pipe(autoprefixer({ browsers: ['last 2 versions'], cascade: false }))
     .pipe(rename('disaster.radio.css'))
     .pipe(gulp.dest('./static/assets/'));
 });
