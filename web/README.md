@@ -1,4 +1,3 @@
-
 This is the web app served up by the ESP8266 for Disaster Radio + the simulator web server.
 
 # Setup
@@ -33,5 +32,13 @@ or if you don't like HMR:
 
 After building with npm, the web app can be uploaded with `make flash_fs'
 
+# License
 
-
+* Code in this ../web/ folder is licensed under
+  [AGPL version 3](https://github.com/sudomesh/disaster-radio/raw/master/web/LICENSE).
+* This folder contains some SVG content,
+  [designed by Smashicons from Flaticon](https://www.flaticon.com/packs/monsters-6),
+  that is licensed under the
+  [Flaticon Free License](https://github.com/sudomesh/disaster-radio/raw/master/web/src/core/assets/svg/source/avatars/license.pdf):
+  - [./src/core/assets/svg/avatars.svg](https://github.com/sudomesh/disaster-radio/tree/master/web/src/core/assets/svg/avatars.svg)
+  - [./src/core/assets/svg/source/avatars/*.svg](https://github.com/sudomesh/disaster-radio/tree/master/web/src/core/assets/svg/source/avatars)
