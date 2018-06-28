@@ -8,6 +8,11 @@
 module.exports = {
 
   /**
+   * API version
+   */
+   version: 0.1,
+
+  /**
    * Node.js webserver port:
    */
   port: 8000,
