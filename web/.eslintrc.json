@@ -1,0 +1,15 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "extends": ["standard", "standard-preact"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": false,
+      "jsx": true
+    },
+    "sourceType": "module"
+  }
+}
