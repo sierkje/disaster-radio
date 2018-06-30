@@ -1,3 +1,3 @@
-import makeChatApp from './chat';
+import makeChatApp from '../chat';
 
 export default Component => makeChatApp(Component);
