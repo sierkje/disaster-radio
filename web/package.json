@@ -1,6 +1,8 @@
 {
   "name": "disaster-radio",
   "version": "0.0.1",
+  "private": true,
+  "license": "AGPL-3.0",
   "scripts": {
     "build-css": "gulp build:css",
     "build-js": "bin/build.js",
@@ -50,6 +52,5 @@
     "tweetnacl": "^1.0.0",
     "watchify": "^3.9.0",
     "ws": "^3.1.0"
-  },
-  "license": "AGPL-3.0"
+  }
 }
